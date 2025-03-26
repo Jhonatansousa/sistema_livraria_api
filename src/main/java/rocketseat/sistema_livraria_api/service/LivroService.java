@@ -2,18 +2,18 @@ package rocketseat.sistema_livraria_api.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.resource.ResourceUrlProvider;
 import rocketseat.sistema_livraria_api.dto.LivroDTO;
+import rocketseat.sistema_livraria_api.exception.LivroConflictException;
+import rocketseat.sistema_livraria_api.exception.LivroNaoEncontradoException;
 import rocketseat.sistema_livraria_api.model.Autor;
 import rocketseat.sistema_livraria_api.model.Livro;
 import rocketseat.sistema_livraria_api.repo.AutorRepo;
 import rocketseat.sistema_livraria_api.repo.LivroRepo;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class LivroService {
@@ -28,15 +28,6 @@ public class LivroService {
     private ResourceUrlProvider resourceUrlProvider;
 
 
-    public List<Livro> getAllLivros() {
-        return (List<Livro>) livroRepo.findAll();
-    }
-
-    //deletar esse metodo abaixo
-//    public Livro addNewLivro(Livro livro) {
-//        return this.livroRepo.save(livro);
-//    }
-
 
     public Livro addNewLivro(LivroDTO livroDTO) {
         Autor autor = autorRepo.findByNomeIgnoreCase(livroDTO.autorNome())
@@ -45,6 +36,7 @@ public class LivroService {
                     novoAutor.setNome(livroDTO.autorNome());
                     return autorRepo.save(novoAutor);
                 });
+        //validar se existe exatamente o mesmo titulo E autor
         Livro livro = new Livro();
         livro.setAutor(autor);
         livro.setTitulo(livroDTO.titulo());
@@ -53,8 +45,30 @@ public class LivroService {
     }
 
 
+    public List<Livro> getAllLivros() {
+        return (List<Livro>) livroRepo.findAll();
+    }
 
-    //criar metodo pra busca...
+
+    public List<Livro> getLivrosByTituloOrAutor(String titulo, String autor) {
+        List<Livro> livros;
+        if (titulo == null) {
+            livros = livroRepo.findByAutor(autor);
+            return livros;
+        } else if (autor == null) {
+            livros = livroRepo.findByTitulo(titulo);
+        } else {
+            livros = livroRepo.findByTituloAndAutor(titulo, autor);
+        }
+        if (livros.isEmpty()) {
+            throw new LivroNaoEncontradoException("Livro nao encontrado");
+        }
+        return livros;
+    }
 
 
+    public void deleteByID(Integer id) {
+        Livro livro = livroRepo.findById(id).orElseThrow(() -> new LivroNaoEncontradoException("Livro não encontrado"));
+        livroRepo.delete(livro);
+    }
 }

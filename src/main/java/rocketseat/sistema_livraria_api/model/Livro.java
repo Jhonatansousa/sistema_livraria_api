@@ -32,8 +32,18 @@ public class Livro {
     @Temporal(TemporalType.DATE)
     private Date dataAtualizacao;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "genero")
-    private String genero;
+    private Genero genero;
+
+    public enum Genero {
+        FANTASIA,
+        ROMANCE,
+        TERROR,
+        MISTERIO,
+        SCI_FI,
+        AVENTURA;
+    }
 
     public Integer getId() {
         return id;
@@ -96,11 +106,11 @@ public class Livro {
     }
 
 
-    public String getGenero() {
+    public Genero getGenero() {
         return genero;
     }
 
-    public void setGenero(String genero) {
+    public void setGenero(Genero genero) {
         this.genero = genero;
     }
 }
