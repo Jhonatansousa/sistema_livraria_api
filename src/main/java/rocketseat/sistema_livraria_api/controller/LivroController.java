@@ -33,10 +33,11 @@ public class LivroController {
     }
 
 
-
-    @GetMapping("/{titulo}{autor}")
+//definir dessa forma o path, onde o titulo e autor são variáveis
+    @GetMapping("/")
     public ResponseEntity<?> findLivro(
-            @RequestParam(required = false) String titulo, @RequestParam(required = false) String autor
+            @RequestParam(required = false) String titulo,
+            @RequestParam(required = false) String autor
     ) {
         //busca por todos ou titulos e/ou autor
         try{
@@ -52,7 +53,8 @@ public class LivroController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+
+    @DeleteMapping("/delete")
     public ResponseEntity<?> deleteLivro(
             @RequestParam Integer id
     ) {
@@ -63,8 +65,4 @@ public class LivroController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage(e.getMessage()));
         }
     }
-
-
-
-
 }

@@ -1,9 +1,7 @@
 package rocketseat.sistema_livraria_api.model;
 import jakarta.persistence.*;
-import java.util.Date;
 
-@Entity
-@Table(name = "autor")
+@Entity(name = "autor")
 public class Autor {
 
     @Id

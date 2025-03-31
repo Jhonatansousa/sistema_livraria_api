@@ -1,11 +1,13 @@
 package rocketseat.sistema_livraria_api.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CurrentTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "livro")
+@Entity(name = "livro")
 public class Livro {
 
     @Id
@@ -17,20 +19,20 @@ public class Livro {
     private String titulo;
 
     @ManyToOne()
-    @JoinColumn(name = "autor_id", insertable = false, updatable = false)
+    @JoinColumn(name = "autor_id", nullable = false)
     private Autor autor;
 
     @Column(name = "disponivel")
     private boolean disponivel = true;
 
 
+    @CurrentTimestamp
     @Column(name = "data_cadastro")
-    @Temporal(TemporalType.DATE)
-    private Date dataCadastro;
+    private LocalDateTime dataCadastro;
 
+    @UpdateTimestamp
     @Column(name = "data_atualizacao")
-    @Temporal(TemporalType.DATE)
-    private Date dataAtualizacao;
+    private LocalDateTime dataAtualizacao;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "genero")
@@ -42,6 +44,7 @@ public class Livro {
         TERROR,
         MISTERIO,
         SCI_FI,
+        AUTOAJUDA,
         AVENTURA;
     }
 
@@ -77,32 +80,20 @@ public class Livro {
         this.disponivel = disponivel;
     }
 
-    public Date getDataCadastro() {
+    public LocalDateTime getDataCadastro() {
         return dataCadastro;
     }
 
-    public void setDataCadastro(Date dataCadastro) {
+    public void setDataCadastro(LocalDateTime dataCadastro) {
         this.dataCadastro = dataCadastro;
     }
 
-    public Date getDataAtualizacao() {
+    public LocalDateTime getDataAtualizacao() {
         return dataAtualizacao;
     }
 
-    public void setDataAtualizacao(Date dataAtualizacao) {
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
         this.dataAtualizacao = dataAtualizacao;
-    }
-
-    @PrePersist
-    public void prePersist() {
-        Date now = new Date();
-        this.dataCadastro = now;
-        this.dataAtualizacao = now;
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        this.dataAtualizacao = new Date();
     }
 
 

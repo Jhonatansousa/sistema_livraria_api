@@ -1,11 +1,12 @@
 package rocketseat.sistema_livraria_api.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CurrentTimestamp;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "cliente")
+@Entity(name = "cliente")
 public class Cliente {
 
 
@@ -17,12 +18,15 @@ public class Cliente {
     @Column(name = "nome", length = 100, nullable = false)
     private String nome;
 
-    @Column(name = "dataNascimento", nullable = false)
-    private Date dataNascimento;
+    @Column(name = "data_nascimento", nullable = false)
+    private LocalDate dataNascimento;
 
     @Column(name = "email", length = 100, nullable = false)
     private String email;
 
+    @Column(name = "data_cadastro")
+    @CurrentTimestamp
+    private LocalDateTime dataCadastro;
 
     public Integer getId() {
         return id;
@@ -40,11 +44,11 @@ public class Cliente {
         this.nome = nome;
     }
 
-    public Date getDataNascimento() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
@@ -54,5 +58,13 @@ public class Cliente {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public LocalDateTime getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(LocalDateTime dataCadastro) {
+        this.dataCadastro = dataCadastro;
     }
 }

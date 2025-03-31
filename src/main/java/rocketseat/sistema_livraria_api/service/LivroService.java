@@ -24,9 +24,6 @@ public class LivroService {
 
     @Autowired
     private AutorRepo autorRepo;
-    @Autowired
-    private ResourceUrlProvider resourceUrlProvider;
-
 
 
     public Livro addNewLivro(LivroDTO livroDTO) {
@@ -53,12 +50,12 @@ public class LivroService {
     public List<Livro> getLivrosByTituloOrAutor(String titulo, String autor) {
         List<Livro> livros;
         if (titulo == null) {
-            livros = livroRepo.findByAutor(autor);
+            livros = livroRepo.findByAutor_Nome(autor);
             return livros;
         } else if (autor == null) {
             livros = livroRepo.findByTitulo(titulo);
         } else {
-            livros = livroRepo.findByTituloAndAutor(titulo, autor);
+            livros = livroRepo.findByTituloAndAutor_Nome(titulo, autor);
         }
         if (livros.isEmpty()) {
             throw new LivroNaoEncontradoException("Livro nao encontrado");

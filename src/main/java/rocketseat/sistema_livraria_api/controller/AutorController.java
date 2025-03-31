@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import rocketseat.sistema_livraria_api.dto.AutorDTO;
 import rocketseat.sistema_livraria_api.dto.ErrorMessage;
 import rocketseat.sistema_livraria_api.exception.AutorConflictException;
 import rocketseat.sistema_livraria_api.model.Autor;
@@ -18,10 +19,10 @@ public class AutorController {
     private AutorService autorService;
 
     @PostMapping("/")
-    public ResponseEntity<?> createAutor(@RequestBody Autor autor) {
+    public ResponseEntity<?> createAutor(@RequestBody AutorDTO autorDTO) {
         try {
-            autorService.addNewAutor(autor);
-            return ResponseEntity.status(HttpStatus.CREATED).body(autor);
+            Autor newAutor = autorService.addNewAutor(autorDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(newAutor);
         } catch (AutorConflictException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage(e.getMessage()));
         }
