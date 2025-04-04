@@ -12,4 +12,6 @@ public interface LivroRepo extends CrudRepository<Livro, Integer> {
     List<Livro> findByAutor_Nome(String autorNome);
 
     List<Livro> findByTituloAndAutor_Nome(String titulo, String autor);
+
+    List<Livro> findByDisponivel(boolean disponivel);
 }

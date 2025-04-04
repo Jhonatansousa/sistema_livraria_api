@@ -37,13 +37,16 @@ public class LivroController {
     @GetMapping("/")
     public ResponseEntity<?> findLivro(
             @RequestParam(required = false) String titulo,
-            @RequestParam(required = false) String autor
+            @RequestParam(required = false) String autor,
+            @RequestParam(required = false) boolean disponivel
     ) {
         //busca por todos ou titulos e/ou autor
-        try{
+        try {
             List<Livro> livros;
-            if (titulo == null && autor == null) {
+            if (titulo == null && autor == null && !disponivel) {
                 livros = livroService.getAllLivros();
+            } else if (disponivel) {
+                livros = livroService.getLivrosDisponiveis();
             } else {
                 livros = livroService.getLivrosByTituloOrAutor(titulo, autor);
             }

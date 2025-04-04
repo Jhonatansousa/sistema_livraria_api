@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rocketseat.sistema_livraria_api.dto.EmprestimoRequestDTO;
 import rocketseat.sistema_livraria_api.exception.ClienteNaoEncontradoException;
+import rocketseat.sistema_livraria_api.exception.EmprestimoException;
 import rocketseat.sistema_livraria_api.exception.LivroNaoEncontradoException;
 import rocketseat.sistema_livraria_api.model.Cliente;
 import rocketseat.sistema_livraria_api.model.Emprestimo;
@@ -12,6 +13,9 @@ import rocketseat.sistema_livraria_api.model.Livro;
 import rocketseat.sistema_livraria_api.repo.ClienteRepo;
 import rocketseat.sistema_livraria_api.repo.EmprestimoRepo;
 import rocketseat.sistema_livraria_api.repo.LivroRepo;
+
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Service
 public class EmprestimoService {
@@ -34,5 +38,22 @@ public class EmprestimoService {
         emprestimo.setLivro(livro);
         emprestimo.setCliente(cliente);
         return emprestimoRepo.save(emprestimo);
+    }
+
+    //não preciso necessariamente tratar erros em um metodo getALL;
+    public Iterable<Emprestimo> getAllEmprestimos() {
+        return  emprestimoRepo.findAll();
+    }
+
+    public Emprestimo updateEmprestimo(Integer id) {
+        Emprestimo emprestimo = emprestimoRepo.findById(id)
+                .orElseThrow(() -> new EmprestimoException("livro nao encontrado"));
+        emprestimo.getLivro().setDisponivel(true);
+        emprestimo.setDataDevolucao(LocalDateTime.now());
+        return emprestimoRepo.save(emprestimo);
+    }
+
+    public Iterable<Emprestimo> getEmprestimoByDateRange(LocalDateTime dataInicio, LocalDateTime dataFim){
+        return emprestimoRepo.findByDataEmprestimoBetween(dataInicio, dataFim);
     }
 }

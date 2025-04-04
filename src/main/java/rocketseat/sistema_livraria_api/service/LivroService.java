@@ -63,6 +63,15 @@ public class LivroService {
         return livros;
     }
 
+    public List<Livro> getLivrosDisponiveis() {
+        List<Livro> livros;
+        livros = livroRepo.findByDisponivel(true);
+        if (livros.isEmpty()) {
+            throw new LivroNaoEncontradoException("Nenhum livro disponível");
+        }
+        return livros;
+    }
+
 
     public void deleteByID(Integer id) {
         Livro livro = livroRepo.findById(id).orElseThrow(() -> new LivroNaoEncontradoException("Livro não encontrado"));
