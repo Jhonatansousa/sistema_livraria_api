@@ -15,7 +15,7 @@ import rocketseat.sistema_livraria_api.repo.EmprestimoRepo;
 import rocketseat.sistema_livraria_api.repo.LivroRepo;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
 
 @Service
 public class EmprestimoService {
@@ -56,4 +56,11 @@ public class EmprestimoService {
     public Iterable<Emprestimo> getEmprestimoByDateRange(LocalDateTime dataInicio, LocalDateTime dataFim){
         return emprestimoRepo.findByDataEmprestimoBetween(dataInicio, dataFim);
     }
+
+//    public List<ClienteWithEmprestimoDTO> getClientesEmprestimo() {
+//        List<Emprestimo> clientesEmprestimo = getAllEmprestimos();
+//        List<Livro> livros = livroRepo.findAll();
+//        List<Emprestimo> response = clientesEmprestimo.stream()
+//                .filter(c-> c.getDataEmprestimo() != null);
+//    }
 }

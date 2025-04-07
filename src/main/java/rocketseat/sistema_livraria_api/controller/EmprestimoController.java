@@ -9,14 +9,10 @@ import rocketseat.sistema_livraria_api.dto.EmprestimoRequestDTO;
 import rocketseat.sistema_livraria_api.dto.ErrorMessage;
 import rocketseat.sistema_livraria_api.exception.EmprestimoException;
 import rocketseat.sistema_livraria_api.model.Emprestimo;
-import rocketseat.sistema_livraria_api.repo.EmprestimoRepo;
 import rocketseat.sistema_livraria_api.service.EmprestimoService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 
 
 @RestController
@@ -83,5 +79,17 @@ public class EmprestimoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage(e.getMessage()));
         }
     }
+
+//    @GetMapping("/clientes-emprestimo/")
+//    public ResponseEntity<?> getClientesEmprestimo() {
+//        try {
+//            List<ClienteWithEmprestimoDTO> clientes = service.getClientesEmprestimo();
+//            return ResponseEntity.ok().body(clientes);
+//
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorMessage(e.getMessage()));
+//        }
+//    }
+
 
 }
